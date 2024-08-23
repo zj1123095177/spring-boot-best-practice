@@ -3,9 +3,8 @@ package cn.javastack.springboot.jpa.controller;
 import cn.javastack.springboot.jpa.entity.UserDO;
 import cn.javastack.springboot.jpa.repo.UserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.apache.catalina.User;
+import org.springframework.web.bind.annotation.*;
 
 @RequiredArgsConstructor
 @RestController
@@ -15,8 +14,12 @@ public class UserController {
 
     @GetMapping("/user/info/{id}")
     public UserDO getUserInfo(@PathVariable("id") long id){
-        UserDO userDO = userRepository.findById(id).orElseGet(null);
-        return userDO;
+        return userRepository.findById(id).orElseGet(UserDO::new);
+    }
+
+    @PostMapping("/user/info")
+    public UserDO addUserInfo(@RequestBody UserDO userDO){
+        return userRepository.save(userDO);
     }
 
 }
