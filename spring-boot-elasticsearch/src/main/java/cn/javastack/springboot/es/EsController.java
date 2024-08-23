@@ -3,10 +3,12 @@ package cn.javastack.springboot.es;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.data.elasticsearch.client.elc.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.SearchHit;
 import org.springframework.data.elasticsearch.core.mapping.IndexCoordinates;
 import org.springframework.data.elasticsearch.core.query.Criteria;
 import org.springframework.data.elasticsearch.core.query.CriteriaQuery;
 import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,17 +25,24 @@ public class EsController {
 
     private final UserRepository userRepository;
 
-    @RequestMapping("/es/insert")
-    public User insert(@RequestParam("name") String name, @RequestParam("sex") int sex) throws InterruptedException {
+    @GetMapping("/es/insert")
+    public User insert(@RequestParam("name") String name, @RequestParam("sex") int sex)
+    {
+        IndexCoordinates indexCoordinates =  IndexCoordinates.of(INDEX_JAVASTACK);
         // 新增
         User user = new User(RandomUtils.nextInt(), name, sex);
-        IndexCoordinates indexCoordinates =  IndexCoordinates.of(INDEX_JAVASTACK);
-        User save = elasticsearchTemplate.save(user, indexCoordinates);
+        return elasticsearchTemplate.save(user, indexCoordinates);
+    }
 
-        // 可能有延迟，休眠一秒再查询
-        Thread.sleep(1000l);
+    @GetMapping("/es/get")
+    public User esGet(@RequestParam("name") String name) {
+        IndexCoordinates indexCoordinates =  IndexCoordinates.of(INDEX_JAVASTACK);
         Query query = new CriteriaQuery(Criteria.where("name").is(name));
-        return elasticsearchTemplate.searchOne(query, User.class, indexCoordinates).getContent();
+        SearchHit<User> userSearchHit = elasticsearchTemplate.searchOne(query, User.class, indexCoordinates);
+        if (userSearchHit != null) {
+            return userSearchHit.getContent();
+        }
+        return null;
     }
 
     @RequestMapping("/es/repo/insert")
