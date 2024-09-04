@@ -3,6 +3,7 @@ package cn.javastack.springboot.quartz;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.quartz.*;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 
@@ -15,22 +16,22 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 public class TaskConfig {
 
     public static final String SIMPLE_TASK = "simple-task";
-    private final SchedulerFactoryBean schedulerFactoryBean;
+//    private final SchedulerFactoryBean schedulerFactoryBean;
 
     /**
      * 动态添加任务
      * @throws SchedulerException
      */
-    @PostConstruct
-    public void init() throws SchedulerException {
-        Scheduler scheduler = schedulerFactoryBean.getScheduler();
-        boolean exists = scheduler.checkExists(JobKey.jobKey(SIMPLE_TASK));
-        if (!exists) {
-            scheduler.scheduleJob(simpleTask(), simpleTaskTrigger());
-        }
-    }
+//    @PostConstruct
+//    public void init() throws SchedulerException {
+//        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+//        boolean exists = scheduler.checkExists(JobKey.jobKey(SIMPLE_TASK));
+//        if (!exists) {
+//            scheduler.scheduleJob(simpleTask(), simpleTaskTrigger());
+//        }
+//    }
 
-    //    @Bean
+    @Bean
     public JobDetail simpleTask() {
         return JobBuilder.newJob(SimpleTask.class)
                 .withIdentity(SIMPLE_TASK)
@@ -39,7 +40,7 @@ public class TaskConfig {
                 .build();
     }
 
-    //    @Bean
+    @Bean
     public Trigger simpleTaskTrigger() {
         CronScheduleBuilder cronScheduleBuilder = CronScheduleBuilder.cronSchedule("0/5 * * * * ? *");
         return TriggerBuilder.newTrigger()
