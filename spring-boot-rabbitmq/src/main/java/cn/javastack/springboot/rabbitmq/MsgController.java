@@ -9,7 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 微信公众号：Java技术栈
+ * 1、解耦
+ * 2、异步提速
+ * 3、流量削峰
+ * 4、提高系统可靠性
  */
 @RequiredArgsConstructor
 @RestController
