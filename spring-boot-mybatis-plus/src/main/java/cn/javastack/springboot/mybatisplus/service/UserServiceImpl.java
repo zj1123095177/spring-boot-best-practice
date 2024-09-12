@@ -26,7 +26,7 @@ public class UserServiceImpl
         } else {
             // QueryWrapper
             log.info("query from wrapper");
-            LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper();
+            LambdaQueryWrapper<UserDO> queryWrapper = new LambdaQueryWrapper<>();
             queryWrapper.eq(UserDO::getUsername, username);
             queryWrapper.eq(UserDO::getStatus, 1);
             return userMapper.selectOne(queryWrapper);
