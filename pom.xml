@@ -6,12 +6,16 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.3.0</version>
+        <version>3.5.0</version>
     </parent>
 
     <groupId>cn.javastack</groupId>
     <artifactId>spring-boot-best-practice</artifactId>
     <version>1.0</version>
+
+    <properties>
+        <java.version>21</java.version>
+    </properties>
 
     <modules>
         <module>spring-boot-quick-start</module>
@@ -52,6 +56,7 @@
         <module>spring-boot-war</module>
 		<module>spring-boot-actuator</module>
         <module>spring-boot-aop</module>
+        <module>spring-boot-ai</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -95,6 +100,37 @@
         </dependency>
 
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.ai</groupId>
+                <artifactId>spring-ai-bom</artifactId>
+                <version>1.0.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>spring-milestones</id>-->
+<!--            <name>Spring Milestones</name>-->
+<!--            <url>https://repo.spring.io/milestone</url>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled>-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>spring-snapshots</id>-->
+<!--            <name>Spring Snapshots</name>-->
+<!--            <url>https://repo.spring.io/snapshot</url>-->
+<!--            <releases>-->
+<!--                <enabled>true</enabled>-->
+<!--            </releases>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
     <build>
         <plugins>
